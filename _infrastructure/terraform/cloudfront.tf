@@ -1,10 +1,7 @@
 
 resource "null_resource" "build_and_deploy" {
   triggers = {
-    always_run = sha1(join("", [
-      filesha1("${var.react_app_path}/package.json"),
-      filesha1("${var.react_app_path}/package-lock.json"),
-    ]))
+    always_run = local.app_hash
   }
 
   provisioner "local-exec" {
