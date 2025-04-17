@@ -1,0 +1,45 @@
+version: "3"
+
+tasks:
+  tf_init:
+    description: Init infrastructure.
+    usage: "task tf_init"
+    cmds:
+      - terraform -chdir=_infrastructure/terraform init -reconfigure -backend-config="key=retirement.tfstate"
+
+  tf_apply:
+    description: Apply infrastructure
+    usage: "task tf_apply "
+    cmds:
+      - terraform -chdir=_infrastructure/terraform apply
+
+  tf_destroy:
+    description: Destroy an infrastructure
+    usage: "task tf_destroy"
+    cmds:
+      - terraform -chdir=_infrastructure/terraform destroy
+
+  tf_console:
+    description: Use the console
+    usage: "task tf_console "
+    cmds:
+      - terraform -chdir=_infrastructure/terraform console
+
+  tf_output_raw:
+    description: Output an argument
+    usage: "task tf_output_raw -- registry_url"
+    cmds:
+      - output=$(echo {{ .CLI_ARGS }} | cut -d " " -f1);
+        echo $(terraform -chdir=_infrastructure/terraform output -raw ${output})
+
+  tf_output:
+    description: Output all of the outputs from the state
+    usage: "task tf_output"
+    cmds:
+      - echo $(terraform -chdir=_infrastructure/terraform output)
+
+  tf_import:
+    cmds:
+      - resource=$(echo {{ .CLI_ARGS }} | cut -d " " -f2);
+        resource_id=$(echo {{ .CLI_ARGS }} | cut -d " " -f3);
+        terraform -chdir=_infrastructure/terraform import ${resource} ${resource_id}
