@@ -2,30 +2,27 @@ import React, { useEffect, useRef } from "react";
 import Chart from "chart.js/auto";
 
 const ChartComponent = ({ data }) => {
-  // Reference to the canvas element for the chart
   const chartRef = useRef(null);
-  // Reference to the Chart.js instance
   const chartInstanceRef = useRef(null);
 
   useEffect(() => {
     // Check if the chartRef has been initialized
+
+    const updateChartRef = (data, chartInstanceRef) => {
+      chartInstanceRef.current.data.labels = data.map((entry) => entry.year);
+      chartInstanceRef.current.data.datasets[0].data = data.map(
+        (entry) => entry.totalDeposits
+      );
+      chartInstanceRef.current.data.datasets[1].data = data.map(
+        (entry) => entry.rothIRA
+      );
+      chartInstanceRef.current.data.datasets[2].data = data.map(
+        (entry) => entry.taxableAccount
+      );
+    };
+
     if (chartRef.current) {
-      // Check if a chart instance already exists
-      if (chartInstanceRef.current) {
-        // Update chart data if the instance exists
-        chartInstanceRef.current.data.labels = data.map((entry) => entry.year);
-        chartInstanceRef.current.data.datasets[0].data = data.map(
-          (entry) => entry.totalDeposits
-        );
-        chartInstanceRef.current.data.datasets[1].data = data.map(
-          (entry) => entry.rothIRA
-        );
-        chartInstanceRef.current.data.datasets[2].data = data.map(
-          (entry) => entry.taxableAccount
-        );
-        chartInstanceRef.current.update(); // Update the chart
-      } else {
-        // Create new chart instance if it doesn't exist
+      const createNewChartInstance = () => {
         const newChartInstance = new Chart(chartRef.current, {
           type: "line",
           data: {
@@ -70,7 +67,15 @@ const ChartComponent = ({ data }) => {
             },
           },
         });
-        chartInstanceRef.current = newChartInstance; // Set the chart instance reference
+        return newChartInstance; // Return the new chart instance
+      };
+
+      // Check if a chart instance already exists
+      if (chartInstanceRef.current) {
+        updateChartRef(data, chartInstanceRef);
+        chartInstanceRef.current.update();
+      } else {
+        chartInstanceRef.current = createNewChartInstance(); // Set the chart instance reference
       }
     }
   }, [data]); // Update the effect when the data prop changes
@@ -82,7 +87,6 @@ const ChartComponent = ({ data }) => {
 
   return (
     <div>
-      {/* Canvas element for the chart with dynamic height */}
       <canvas ref={chartRef} style={canvasStyle} />
     </div>
   );

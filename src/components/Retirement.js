@@ -111,8 +111,7 @@ const Retirement = () => {
     () => formattedNumber(lastSimulationData?.totalDeposits),
     [lastSimulationData?.totalDeposits]
   );
-  const ogTitle = "BenMath.com | Roth IRA Simulator";
-  const ogImage = "https://www.benmath.com/portfolio/tools/roth.jpeg";
+  const ogTitle = "JonathanMath.com | Roth IRA Simulator";
   useEffect(() => {
     simulateGrowth();
   }, [simulateGrowth]);
@@ -121,7 +120,6 @@ const Retirement = () => {
       <Helmet>
         <title>{ogTitle}</title>
         <meta property="og:title" content={ogTitle} />
-        <meta property="og:image" content={ogImage} />
       </Helmet>
       <h1 className="text-center">Roth IRA Simulator</h1>
       <Container>
