@@ -20,7 +20,38 @@ variable "react_app_path" {
   type        = string
 }
 
+
+variable "github_thumbprint" {
+  type    = string
+  default = "6938fd4d98bab03faadb97b34396831e3780aea1"
+}
+
+
+variable "github_repository_name" {
+  description = "Name of the GitHub repository"
+  type        = string
+  default     = "Retirement"
+}
+
+variable "github_repository_owner" {
+  description = "Owner of the GitHub repository"
+  type        = string
+  default     = "jmath1"
+}
+
 variable "bucket_name" {
   description = "Name of the S3 bucket for the React app"
   type        = string
+  default     = "jonathanmathcom-retirement-react-app"
+}
+
+variable "aws_account_number" {
+  description = "AWS account number"
+  type        = string
+}
+
+variable "github_token" {
+  description = "GitHub token for accessing the repository"
+  type        = string
+  sensitive   = true
 }
